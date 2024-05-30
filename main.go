@@ -21,6 +21,7 @@ var numOFCPU int
 func main() {
 	workerCount := flag.Int("cpu", runtime.NumCPU(), "set Cpu usage")
 	dir := flag.String("dir", "./", "input Folder")
+	headersample := flag.String("header", "./header/headersample.las", "input Folder")
 	flag.Parse()
 	runtime.GOMAXPROCS(*workerCount)
 
@@ -30,16 +31,14 @@ func main() {
 		return
 	}
 	//find all las file
-	fmt.Println(*dir)
 	xyzs := findFile(*dir, ".pcd")
-	fmt.Println(xyzs)
 
-	convert(xyzs)
+	convert(xyzs, *headersample)
 }
 
-func convert(xyzs []string) error {
+func convert(xyzs []string, header string) error {
 	for _, xyz := range xyzs {
-		headerExample, err := lidario.NewLasFile("./headersample.las", "rh")
+		headerExample, err := lidario.NewLasFile(header, "rh")
 		if err != nil {
 			return err
 		}
@@ -64,7 +63,6 @@ func convert(xyzs []string) error {
 		scanner := bufio.NewScanner(file)
 		wg.Add(1)
 		reader := lidarpal.NewReader(scanner, &wg)
-		fmt.Println("Serve reader")
 		reader.Serve(writechan)
 		wg.Wait()
 		writer.Close()

@@ -2,7 +2,6 @@ package lidarpal
 
 import (
 	"bufio"
-	"fmt"
 	"sync"
 
 	"github.com/hongping1224/lidario"
@@ -35,7 +34,6 @@ func (read *Reader) Read(input chan<- lidario.LasPointer) {
 	for i := 0; i < 13; i++ {
 		read.scanner.Scan()
 	}
-	fmt.Println("reading")
 	for read.scanner.Scan() {
 		data := read.scanner.Text()
 		stringchan <- data
@@ -43,7 +41,6 @@ func (read *Reader) Read(input chan<- lidario.LasPointer) {
 	close(stringchan)
 	wg.Wait()
 	read.wg.Done()
-	fmt.Println("Reader Done")
 }
 
 // Serve read concerrently

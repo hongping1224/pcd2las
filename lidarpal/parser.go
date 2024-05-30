@@ -1,7 +1,6 @@
 package lidarpal
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"sync"
@@ -22,7 +21,6 @@ func NewParser(input chan string, wg *sync.WaitGroup) *Parser {
 
 // Read point into channel
 func (parser *Parser) Parse(input chan<- lidario.LasPointer) {
-	fmt.Println("Parser start")
 	for {
 		s, open := <-parser.input
 		if !open {
@@ -52,7 +50,6 @@ func (parser *Parser) Parse(input chan<- lidario.LasPointer) {
 		p := lidario.PointRecord0{X: x, Y: y, Z: z, Intensity: uint16(intensity)}
 		input <- &p
 	}
-	fmt.Println("Parser done")
 	parser.wg.Done()
 }
 
