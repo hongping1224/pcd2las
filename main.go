@@ -21,7 +21,7 @@ var numOFCPU int
 func main() {
 	workerCount := flag.Int("cpu", runtime.NumCPU(), "set Cpu usage")
 	dir := flag.String("dir", "./", "input Folder")
-	headersample := flag.String("header", "./header/headersample.las", "input Folder")
+	headersample := flag.String("header", "./header/headersample.las", "header sample path")
 	flag.Parse()
 	runtime.GOMAXPROCS(*workerCount)
 
